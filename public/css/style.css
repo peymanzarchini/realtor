@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
   font-family: "roboto";
   src: url("../fonts/Roboto-Regular.eot");
   src: url("../fonts/Roboto-Regular.eot?#iefix") format("embedded-opentype"),
@@ -8,13 +8,9 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
+} */
 
 * {
   margin: 0;
   padding: 0;
-}
-
-body {
-  font-family: "roboto";
 }

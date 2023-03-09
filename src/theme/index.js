@@ -1,6 +1,13 @@
 import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
+  typography: {
+    fontFamily: "Roboto",
+    fontWeightLight: 400,
+    fontWeightRegular: 500,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+  },
   breakpoints: {
     values: {
       xs: 0,

@@ -1,7 +1,9 @@
+import { Typography } from "@mui/material";
+
 function Navbar() {
   return (
     <>
-      <h1>Navbar</h1>
+      <Typography variant="h5">Navbar</Typography>
     </>
   );
 }
