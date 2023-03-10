@@ -1,14 +1,10 @@
-import { Outlet } from "react-router-dom";
-import Navbar from "./components/navbar/Navbar";
+import { Typography } from "@mui/material";
 
 function App() {
   return (
-    <header>
-      <Navbar />
-      <div>
-        <Outlet />
-      </div>
-    </header>
+    <>
+      <Typography variant="h5">Home</Typography>
+    </>
   );
 }
 
