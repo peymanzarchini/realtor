@@ -14,5 +14,10 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  minHeight: "0 !important",
+  [theme.breakpoints.down("sm")]: {
+    minHeight: 48,
+  },
+  [theme.breakpoints.up("sm")]: {
+    minHeight: 0,
+  },
 }));
