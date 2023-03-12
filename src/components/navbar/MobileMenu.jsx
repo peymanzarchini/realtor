@@ -1,18 +1,32 @@
-import { Box, IconButton, Tabs, Tab, Divider, useTheme } from "@mui/material";
+import { Box, IconButton, Tabs, Tab, Divider, useTheme, Fab } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
 import { GitHub, Instagram, Facebook, Twitter } from "@mui/icons-material";
 import { grey } from "@mui/material/colors";
 import { Link } from "react-router-dom";
 import { a11yProps } from "../../helpers/helpers";
 import logo from "../../assets/logo.svg";
 
-function MobileMenu({ closeMenu, value, handleChange }) {
+function MobileMenu({ closeMenu, value, handleChange, handleFalse }) {
   const theme = useTheme();
 
   return (
     <Box component="div" sx={{ textAlign: "center", height: "100vh" }}>
-      <Box component="img" src={logo} alt="logo" sx={{ height: "1.25rem", margin: "20px 0" }} />
+      <Fab
+        size="small"
+        color="primary"
+        aria-label="close-menu"
+        onClick={closeMenu}
+        sx={{ position: "absolute", top: "5px", right: "10px" }}
+      >
+        <CloseIcon />
+      </Fab>
 
-      <Box component="div" sx={{ m: "0 auto", textAlign: "center" }}>
+      <Link to={"/"} onClick={closeMenu}>
+        <Box component="img" src={logo} alt="logo" sx={{ height: "1.25rem", mt: 8 }} />
+      </Link>
+
+      <Box component="div" sx={{ m: "20px auto", textAlign: "center" }}>
         <IconButton
           aria-label="Github"
           sx={{
@@ -117,6 +131,24 @@ function MobileMenu({ closeMenu, value, handleChange }) {
           {...a11yProps(2)}
           sx={{ textTransform: "none" }}
           onClick={closeMenu}
+        />
+
+        <Tab
+          component={Link}
+          to="/sign-up"
+          label="Sign up"
+          sx={{
+            backgroundColor: `${theme.palette.primary.main}`,
+            borderRadius: "50px",
+            textTransform: "none",
+            minHeight: 0,
+            color: "white",
+            margin: "15px 20px",
+          }}
+          onClick={() => {
+            handleFalse();
+            closeMenu();
+          }}
         />
       </Tabs>
     </Box>
