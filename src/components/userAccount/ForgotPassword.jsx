@@ -11,11 +11,27 @@ import {
   useTheme,
 } from "@mui/material";
 import forgotPassPhoto from "../../assets/forgotPass.jpg";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { Link } from "react-router-dom";
 import OAuthButton from "./OAuthButton";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 function ForgotPassword() {
+  const [email, setEmail] = useState("");
   const theme = useTheme();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Email was sent");
+    } catch (error) {
+      toast.error("Could not send reset password");
+    }
+  }
+
   return (
     <Box component="section">
       <Typography
@@ -51,8 +67,11 @@ function ForgotPassword() {
             </Grid>
 
             <Grid item xs={12} sm={12} md={5} lg={6}>
-              <Box component="form">
+              <Box component="form" onSubmit={handleSubmit}>
                 <TextField
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   fullWidth
                   type="email"
                   placeholder="Email address"
@@ -79,6 +98,7 @@ function ForgotPassword() {
                   </Typography>
                 </Box>
                 <Button
+                  type="submit"
                   variant="contained"
                   fullWidth
                   sx={{
