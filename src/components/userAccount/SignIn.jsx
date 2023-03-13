@@ -15,11 +15,31 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import siginPhoto from "../../assets/signin.jpg";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OAuthButton from "./OAuthButton";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
 
 function SignIn({ handleFalse }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Bad user credentials");
+    }
+  }
 
   function handleToggleShowPass() {
     setShowPassword(!showPassword);
@@ -61,14 +81,20 @@ function SignIn({ handleFalse }) {
             </Grid>
 
             <Grid item xs={12} sm={12} md={5} lg={6}>
-              <Box component="form">
+              <Box component="form" onSubmit={handleSubmit}>
                 <TextField
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   fullWidth
                   type="email"
                   placeholder="Email address"
                   sx={{ mb: 4, backgroundColor: "#fff" }}
                 />
                 <TextField
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   fullWidth
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
@@ -114,6 +140,7 @@ function SignIn({ handleFalse }) {
                   </Typography>
                 </Box>
                 <Button
+                  type="submit"
                   variant="contained"
                   fullWidth
                   sx={{
