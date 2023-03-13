@@ -17,15 +17,56 @@ import sigupPhoto from "../../assets/signup.jpg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import OAuthButton from "./OAuthButton";
+import { useNavigate } from "react-router-dom";
 
-function SignUp({ handleFalse, handleTrue }) {
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { db } from "../../data/firebase";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
+
+function SignUp({ handleFalse }) {
+  const [fullname, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const formData = {
+    fullname,
+    email,
+    password,
+  };
+
+  const theme = useTheme();
+  const navigate = useNavigate();
 
   function handleToggleShowPass() {
     setShowPassword(!showPassword);
   }
 
-  const theme = useTheme();
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      updateProfile(auth.currentUser, {
+        displayName: fullname,
+      });
+      const user = userCredential.user;
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timeStamp = serverTimestamp();
+
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+      toast.success("Sign up was successful");
+      navigate("/");
+      setFullName("");
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      toast.error("Something went wrong with the registration");
+    }
+  }
 
   return (
     <Box component="section">
@@ -62,20 +103,29 @@ function SignUp({ handleFalse, handleTrue }) {
             </Grid>
 
             <Grid item xs={12} sm={12} md={5} lg={6}>
-              <Box component="form">
+              <Box component="form" onSubmit={handleSubmit} autoComplete="off">
                 <TextField
+                  name="fullname"
+                  value={fullname}
+                  onChange={(e) => setFullName(e.target.value)}
                   fullWidth
                   type="text"
                   placeholder="Full name"
                   sx={{ mb: 4, backgroundColor: "#fff" }}
                 />
                 <TextField
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   fullWidth
                   type="email"
                   placeholder="Email address"
                   sx={{ mb: 4, backgroundColor: "#fff" }}
                 />
                 <TextField
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   fullWidth
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
@@ -110,7 +160,7 @@ function SignUp({ handleFalse, handleTrue }) {
                 >
                   <Typography component="span" variant="subtitle2">
                     Have a account?{" "}
-                    <Link to="/sign-in" style={{ color: "red" }} onClick={handleTrue}>
+                    <Link to="/sign-in" style={{ color: "red" }}>
                       Sign in
                     </Link>
                   </Typography>
@@ -121,6 +171,7 @@ function SignUp({ handleFalse, handleTrue }) {
                   </Typography>
                 </Box>
                 <Button
+                  type="submit"
                   variant="contained"
                   fullWidth
                   sx={{

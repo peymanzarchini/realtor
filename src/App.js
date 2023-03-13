@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Home from "./components/home/Home";
 import Navbar from "./components/navbar/Navbar";
 import Offers from "./components/offers/Offers";
@@ -7,6 +8,7 @@ import Profile from "./components/profile/Profile";
 import ForgotPassword from "./components/userAccount/ForgotPassword";
 import SignIn from "./components/userAccount/SignIn";
 import SignUp from "./components/userAccount/SignUp";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const location = useLocation();
@@ -37,12 +39,22 @@ function App() {
         <Route path="/sign-in" element={<SignIn handleFalse={handleFalseValue} />} />
         <Route
           path="/sign-up"
-          element={
-            <SignUp handleFalse={handleFalseValue} value={value} handleChange={handleChange} />
-          }
+          element={<SignUp handleFalse={handleFalseValue} currentTab={currentTab} />}
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }
