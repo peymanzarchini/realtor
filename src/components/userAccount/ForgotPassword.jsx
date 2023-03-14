@@ -89,7 +89,7 @@ function ForgotPassword() {
                 >
                   <Typography component="span" variant="subtitle2">
                     Don't have a account?{" "}
-                    <Link to="/Register" style={{ color: "red" }}>
+                    <Link to="/sign-up" style={{ color: "red" }}>
                       Register
                     </Link>
                   </Typography>

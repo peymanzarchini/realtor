@@ -20,7 +20,7 @@ import OAuthButton from "./OAuthButton";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 
-function SignIn({ handleFalse }) {
+function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -129,14 +129,12 @@ function SignIn({ handleFalse }) {
                 >
                   <Typography component="span" variant="subtitle2">
                     Don't have a account?{" "}
-                    <Link to="/sign-up" style={{ color: "red" }} onClick={handleFalse}>
+                    <Link to="/sign-up" style={{ color: "red" }}>
                       Register
                     </Link>
                   </Typography>
                   <Typography variant="subtitle2">
-                    <Link to="/forgot-password" onClick={handleFalse}>
-                      Forgot password?
-                    </Link>
+                    <Link to="/forgot-password">Forgot password?</Link>
                   </Typography>
                 </Box>
                 <Button

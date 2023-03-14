@@ -2,15 +2,34 @@ import { Box, Container, Tabs, Tab, Fab, Drawer, useTheme } from "@mui/material"
 import logo from "../../assets/logo.svg";
 import { useState } from "react";
 import { StyledAppBar, StyledToolbar } from "./customize";
-import { a11yProps } from "../../helpers/helpers";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import MobileMenu from "./MobileMenu";
 
-function Navbar({ value, handleChange, handleFalse }) {
+function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const theme = useTheme();
+  const location = useLocation();
+
+  const listItem = {
+    cursor: "pointer",
+    padding: "12px 0",
+    fontSize: "14px",
+    lineHeight: "20px",
+    fontWeight: "600",
+    borderBottomWidth: "3px",
+    borderBottomColor: "transparent",
+  };
+
+  const listItemAfter = {
+    color: `${theme.palette.primary.main}`,
+    borderBottom: `3px solid ${theme.palette.primary.main}`,
+  };
+
+  function pathMatchRoute(route) {
+    return route === location.pathname ? listItemAfter : listItem;
+  }
 
   return (
     <StyledAppBar>
@@ -29,12 +48,7 @@ function Navbar({ value, handleChange, handleFalse }) {
             },
           }}
         >
-          <MobileMenu
-            closeMenu={() => setDrawerOpen(false)}
-            value={value}
-            handleChange={handleChange}
-            handleFalse={handleFalse}
-          />
+          <MobileMenu closeMenu={() => setDrawerOpen(false)} />
         </Drawer>
 
         <StyledToolbar>
@@ -55,9 +69,9 @@ function Navbar({ value, handleChange, handleFalse }) {
                 sx={{ display: "flex", alignItems: "center", justifyContent: "center", mx: "auto" }}
               />
             </Fab>
+
             <Tabs
-              value={value}
-              onChange={handleChange}
+              value={false}
               sx={{
                 display: { xs: "none", sm: "flex", md: "flex", lg: "flex" },
                 height: 0,
@@ -66,26 +80,26 @@ function Navbar({ value, handleChange, handleFalse }) {
               }}
             >
               <Tab
+                style={pathMatchRoute("/")}
                 component={Link}
                 to="/"
                 label="Home"
-                {...a11yProps(0)}
                 sx={{
                   textTransform: "none",
                 }}
               />
               <Tab
+                style={pathMatchRoute("/offers")}
                 component={Link}
                 to="/offers"
                 label="Offers"
-                {...a11yProps(1)}
                 sx={{ textTransform: "none" }}
               />
               <Tab
+                style={pathMatchRoute("/sign-in")}
                 component={Link}
                 to="/sign-in"
                 label="Sign in"
-                {...a11yProps(2)}
                 sx={{
                   textTransform: "none",
                 }}
@@ -103,7 +117,6 @@ function Navbar({ value, handleChange, handleFalse }) {
                   margin: "auto 20px",
                   color: "white",
                 }}
-                onClick={handleFalse}
               />
             </Tabs>
           </Box>

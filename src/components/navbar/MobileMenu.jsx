@@ -3,12 +3,31 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { GitHub, Instagram, Facebook, Twitter } from "@mui/icons-material";
 import { grey } from "@mui/material/colors";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { a11yProps } from "../../helpers/helpers";
 import logo from "../../assets/logo.svg";
 
-function MobileMenu({ closeMenu, value, handleChange, handleFalse }) {
+function MobileMenu({ closeMenu }) {
   const theme = useTheme();
+  const location = useLocation();
+
+  const listItem = {
+    cursor: "pointer",
+    padding: "12px 0",
+    fontSize: "14px",
+    lineHeight: "20px",
+    fontWeight: "600",
+    borderBottomWidth: "3px",
+    borderBottomColor: "transparent",
+  };
+
+  const listItemAfter = {
+    color: `${theme.palette.primary.main}`,
+  };
+
+  function pathMatchRoute(route) {
+    return route === location.pathname ? listItemAfter : listItem;
+  }
 
   return (
     <Box component="div" sx={{ textAlign: "center", height: "100vh" }}>
@@ -107,24 +126,25 @@ function MobileMenu({ closeMenu, value, handleChange, handleFalse }) {
 
       <Divider variant="middle" color={grey[900]} sx={{ mt: 2 }} />
 
-      <Tabs value={value} onChange={handleChange} orientation="vertical" sx={{ mt: 2 }}>
+      <Tabs value={false} orientation="vertical" sx={{ mt: 2 }}>
         <Tab
+          style={pathMatchRoute("/")}
           component={Link}
           to="/"
           label="Home"
-          {...a11yProps(0)}
           sx={{ textTransform: "none" }}
           onClick={closeMenu}
         />
         <Tab
+          style={pathMatchRoute("/offers")}
           component={Link}
           to="/offers"
           label="Offers"
-          {...a11yProps(1)}
           sx={{ textTransform: "none" }}
           onClick={closeMenu}
         />
         <Tab
+          style={pathMatchRoute("/sign-in")}
           component={Link}
           to="/sign-in"
           label="Sign in"
@@ -145,10 +165,7 @@ function MobileMenu({ closeMenu, value, handleChange, handleFalse }) {
             color: "white",
             margin: "15px 20px",
           }}
-          onClick={() => {
-            handleFalse();
-            closeMenu();
-          }}
+          onClick={closeMenu}
         />
       </Tabs>
     </Box>

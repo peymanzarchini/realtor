@@ -24,7 +24,7 @@ import { db } from "../../data/firebase";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
-function SignUp({ handleFalse }) {
+function SignUp() {
   const [fullname, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -165,9 +165,7 @@ function SignUp({ handleFalse }) {
                     </Link>
                   </Typography>
                   <Typography variant="subtitle2">
-                    <Link to="/forgot-password" onClick={handleFalse}>
-                      Forgot password?
-                    </Link>
+                    <Link to="/forgot-password">Forgot password?</Link>
                   </Typography>
                 </Box>
                 <Button
